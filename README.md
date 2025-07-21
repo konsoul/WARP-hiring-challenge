@@ -1,87 +1,43 @@
-# 🚀 WARP Hiring Challenge
+# 🚀 Mars Mission Analyzer - WARP Challenge
 
-## 📋 Project Overview
+> **Welcome!** This interactive Mars Mission Control experience will help you discover the secret access code for the longest successful Mars mission. 🔍
 
-This repository contains a programming challenge designed for candidates applying to Warp Terminal. The challenge involves analyzing complex space mission log data to extract specific insights using command-line tools and shell scripting.
+## 🎯 Mission Brief
 
-> **Note**: Participation in this challenge is optional. You can still submit an application to Warp without completing it, but it's a great way to showcase your technical skills!
+You are a data analyst at the **Interplanetary Space Agency**. Your mission: analyze space mission data from 2030-2070 and find the security code of the **longest successful Mars mission**.
 
-## 🏗️ Project Structure
+## 🚀 Quick Start
 
-```
-WARP-hiring-challenge/
-├── README.md                 # This file - project overview and documentation
-├── mission_challenge.md      # Detailed challenge instructions and requirements
-├── mars_mission_analyzer.sh  # Comprehensive analysis script with beautiful output
-└── space_missions.log        # Mission data file (2030-2070 space missions)
-```
+### Option 1: Full Mission Control Experience
 
-## 🛠️ Tech Stack & Tools
+Run the interactive Mars Mission Analyzer with beautiful terminal graphics:
 
-- **Primary Language**: Shell scripting (Bash/Zsh)
-- **Data Processing**: AWK (GNU AWK recommended)
-- **Utilities**: Standard Unix command-line tools
-  - `sort` - For data ordering
-  - `grep` - For pattern matching
-  - `head`/`tail` - For data sampling
-- **Environment**: Unix-like system (macOS, Linux, WSL)
-
-## 🎯 Challenge Description
-
-### Mission Objective
-
-You are a data analyst at the **Interplanetary Space Agency**. Your task is to analyze a complex log file containing data about thousands of space missions conducted between 2030 and 2070.
-
-**Goal**: Find the security code of the **longest successful Mars mission** in the database.
-
-### Data Format
-
-The log file contains mission records with the following structure:
-
-```
-Date | Mission ID | Destination | Status | Crew Size | Duration (days) | Success Rate | Security Code
+```bash
+./mars_mission_analyzer.sh
 ```
 
-### Example Entry
+### Option 2: Simple Analysis
 
+For a quick, no-frills result:
+
+```bash
+./simple_mars_finder.sh
 ```
-2045-07-12 | KLM-1234 | Mars | Completed | 5 | 387 | 98.7 | TRX-842-YHG
-```
 
-### Important Constraints
+## 📋 What You'll Get
 
-- Only consider missions with **"Completed"** status
-- Target destination must be **"Mars"**
-- Duration is measured in **days**
-- File contains commented lines (starting with #) that should be ignored
-- Field separators may have inconsistent spacing
+- 🎮 **Interactive Mission Control Interface**
+- 📊 **Comprehensive Mars mission statistics**
+- 🏆 **Top 5 longest missions leaderboard**
+- 🔐 **The secret security code you need**
+- 🎨 **Beautiful retro terminal graphics**
 
-## 🔧 Setup Instructions
+## 🎪 Features
 
-### Prerequisites
-
-Ensure you have access to a Unix-based environment with the following tools:
-
-- `awk` (GNU AWK preferred)
-- `sort`
-- `grep`
-- Standard shell utilities
-
-### Getting Started
-
-1. **Clone or download** this repository
-2. **Navigate** to the project directory:
-   ```bash
-   cd WARP-hiring-challenge
-   ```
-3. **Verify** the data file exists:
-   ```bash
-   ls -la space_missions.log
-   ```
-4. **Test** your environment:
-   ```bash
-   awk --version
-   ```
+- ✅ **No fallback data** - 100% real analysis
+- ✅ **Clean CSV parsing** - Reliable results
+- ✅ **Docker ready** - Works in any environment
+- ✅ **Interactive prompts** - Engaging user experience
 
 ## 💻 Solution Approach
 
