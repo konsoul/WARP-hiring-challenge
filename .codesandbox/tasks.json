@@ -1,0 +1,20 @@
+{
+  "setupTasks": [
+    {
+      "name": "Setup",
+      "command": "echo 'Welcome to the Mars Mission Analyzer! Check out the README.md for instructions.'"
+    }
+  ],
+  "tasks": {
+    "run-mars-analyzer": {
+      "name": "Run Mars Mission Analyzer",
+      "command": "./mars_mission_analyzer.sh",
+      "runAtStart": false
+    },
+    "run-simple-analyzer": {
+      "name": "Run Simple Analyzer",
+      "command": "./simple_mars_finder.sh",
+      "runAtStart": false
+    }
+  }
+}

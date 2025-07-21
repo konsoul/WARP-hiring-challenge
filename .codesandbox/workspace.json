@@ -1,0 +1,18 @@
+{
+  "preview": [
+    {
+      "views": [
+        {
+          "id": "codesandbox.terminal"
+        },
+        {
+          "id": "codesandbox.browser"
+        }
+      ]
+    }
+  ],
+  "openedFiles": [
+    "README.md",
+    "mars_mission_analyzer.sh"
+  ]
+}
