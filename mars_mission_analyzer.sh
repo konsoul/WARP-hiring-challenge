@@ -3,7 +3,7 @@
 # WARP Hiring Challenge - Mission Control Mars Analyzer
 # Houston, we have beautiful data analysis!
 
-LOG_FILE="space_missions.log"
+LOG_FILE="space_missions_clean.csv"
 
 # SYNTHWAVE COLOR PALETTE 🌈
 NEON_PINK='\033[38;5;198m'      # Hot pink
@@ -124,7 +124,7 @@ load_progress() {
 # Check if log file exists
 if [[ ! -f "$LOG_FILE" ]]; then
     echo -e "${RED}❌ Error: $LOG_FILE not found!${NC}"
-    echo -e "${YELLOW}Please ensure the space_missions.log file is in the current directory.${NC}"
+    echo -e "${YELLOW}Please ensure the space_missions_clean.csv file is in the current directory.${NC}"
     exit 1
 fi
 
@@ -158,7 +158,7 @@ echo -e "${NEON_CYAN}FLIGHT: All stations report GO for mission analysis...${NC}
 sleep 0.8
 
 # Get comprehensive Mars mission statistics
-awk -F'|' '
+awk -F',' '
 BEGIN {
     max_duration = 0
     total_missions = 0
@@ -166,13 +166,9 @@ BEGIN {
     min_duration = 999999
 }
 
-/Mars.*Completed/ {
-    # Clean the fields
-    gsub(/[[:space:]]/, "", $6)  # Duration
-    gsub(/[[:space:]]/, "", $2)  # Mission ID
-    gsub(/[[:space:]]/, "", $8)  # Security Code
-    gsub(/[[:space:]]/, "", $7)  # Success Rate
-    gsub(/[[:space:]]/, "", $5)  # Crew Size
+NR>1 && $3=="Mars" && $4=="Completed" {
+    # CSV fields: Date,Mission_ID,Destination,Status,Crew_Size,Duration_Days,Success_Rate,Security_Code
+    # No need to clean CSV fields as they are already clean
     
     duration = $6
     total_missions++
@@ -201,23 +197,21 @@ END {
         print "🌌 RED PLANET MISSION STATISTICS - STATUS: NOMINAL"
         print "▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
         printf "▶ TOTAL SUCCESSFUL MARS OPS: %d missions\n", total_missions
-        printf "▶ AVERAGE MISSION DURATION: %.1f sols (Martian days)\n", avg_duration
-        printf "▶ SHORTEST OPERATION: %d sols (Call Sign: %s | Launch: %s)\n", min_duration, shortest_mission_id, shortest_date
-        printf "▶ LONGEST OPERATION: %d sols (Call Sign: %s) \n", max_duration, longest_mission_id
+        printf "▶ AVERAGE MISSION DURATION: %.1f days\n", avg_duration
+        printf "▶ SHORTEST OPERATION: %d days (Call Sign: %s | Launch: %s)\n", min_duration, shortest_mission_id, shortest_date
+        printf "▶ LONGEST OPERATION: %d days (Call Sign: %s) \n", max_duration, longest_mission_id
         print ""
         
         print "🏆 LONGEST SUCCESSFUL MARS MISSION - PRIORITY ONE"
         print "▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
         printf "🔴 LAUNCH WINDOW    : %s\n", longest_date
         printf "📱 MISSION CALLSIGN : %s\n", longest_mission_id
-        printf "⏰ MISSION DURATION : %d sols (%.2f Earth years)\n", max_duration, max_duration/365.25
+        printf "⏰ MISSION DURATION : %d days (%.2f Earth years)\n", max_duration, max_duration/365.25
         printf "👨‍🚀 CREW MANIFEST    : %s astronauts\n", longest_crew_size
         printf "📈 MISSION SUCCESS  : %s%% efficiency\n", longest_success_rate
         printf "🔐 ACCESS CODE      : *** CLASSIFIED ***\n"
         print ""
         
-        # Store the security code in a temporary file for later retrieval
-        print longest_security_code > "/tmp/mars_mission_secret.tmp"
         
     } else {
         print "❌ HOUSTON, WE HAVE A PROBLEM - No successful Mars missions found!"
@@ -231,15 +225,13 @@ load_progress "RETRO: Compiling mission performance rankings" 2.3 9
 echo -e "${NEON_PURPLE}${BOLD}🔥 TOP 5 MARS OPERATIONS - MISSION LEADERBOARD${NC}"
 print_subseparator
 
-awk -F'|' '/Mars.*Completed/ {
-    gsub(/[[:space:]]/, "", $6)
-    gsub(/[[:space:]]/, "", $2)
+awk -F',' 'NR>1 && $3=="Mars" && $4=="Completed" {
     print $6 "|" $2 "|" $1
 }' "$LOG_FILE" | sort -t'|' -k1,1nr | head -5 | awk -F'|' '{
-    if (NR == 1) printf "🥇 RANK %d: Mission %s - %s sols [%s]\n", NR, $2, $1, $3
-    else if (NR == 2) printf "🥈 RANK %d: Mission %s - %s sols [%s]\n", NR, $2, $1, $3
-    else if (NR == 3) printf "🥉 RANK %d: Mission %s - %s sols [%s]\n", NR, $2, $1, $3
-    else printf "💫 RANK %d: Mission %s - %s sols [%s]\n", NR, $2, $1, $3
+    if (NR == 1) printf "🥇 RANK %d: Mission %s - %s days [%s]\n", NR, $2, $1, $3
+    else if (NR == 2) printf "🥈 RANK %d: Mission %s - %s days [%s]\n", NR, $2, $1, $3
+    else if (NR == 3) printf "🥉 RANK %d: Mission %s - %s days [%s]\n", NR, $2, $1, $3
+    else printf "💫 RANK %d: Mission %s - %s days [%s]\n", NR, $2, $1, $3
 }'
 
 echo ""
@@ -296,8 +288,8 @@ if [[ $choice =~ ^[Yy]$ ]]; then
     echo ""
     sleep 1.0
     
-    # Read the secret code from temp file
-    SECRET_CODE=$(cat /tmp/mars_mission_secret.tmp 2>/dev/null || echo "XRT-421-ZQP")
+    # Get the secret code dynamically from CSV data
+    SECRET_CODE=$(awk -F',' 'NR>1 && $3=="Mars" && $4=="Completed" { if ($6 > max) { max=$6; code=$8 } } END { print code }' "$LOG_FILE")
     
     # Epic reveal interface
     clear
@@ -332,12 +324,8 @@ if [[ $choice =~ ^[Yy]$ ]]; then
     echo -e "${DIM}${DARK_CYAN}End of classified transmission. Houston out.${NC}"
     echo ""
     
-    # Clean up temp file
-    rm -f /tmp/mars_mission_secret.tmp
 else
     echo -e "${NEON_ORANGE}Flight Director: Access denied. Mission terminated.${NC}"
     echo -e "${DIM}${DARK_CYAN}Perhaps another time, when you're ready for such responsibility.${NC}"
-    # Clean up temp file
-    rm -f /tmp/mars_mission_secret.tmp
     exit 0
 fi

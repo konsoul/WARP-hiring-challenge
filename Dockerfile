@@ -12,7 +12,7 @@ WORKDIR /app
 
 # Copy the shell script and data files
 COPY mars_mission_analyzer.sh .
-COPY space_missions.log .
+COPY space_missions_clean.csv .
 
 # Make the script executable
 RUN chmod +x mars_mission_analyzer.sh
